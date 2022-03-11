@@ -37,36 +37,36 @@ func AutoHand(controller interface{}) gin.HandlerFunc {
 		realAction := strings.ToLower(c.Param("action"))
 		controllerType := reflect.TypeOf(controller)
 		pkgName := controllerType.String()
-		methods.RLock()
+		//methods.RLock()
 		_, hasMethod := methods.maps[method]
-		methods.RUnlock()
+		//methods.RUnlock()
 		if !hasMethod {
-			methods.Lock()
+			//methods.Lock()
 			methods.maps[method] = make(map[string]map[string]reflect.Value)
-			methods.Unlock()
+			//methods.Unlock()
 		}
-		methods.RLock()
+		//methods.RLock()
 		value, hasRealAction := methods.maps[method][pkgName][realAction]
-		methods.RUnlock()
+		//methods.RUnlock()
 		if !hasRealAction {
 			methodslen := len(methods.maps[pkgName])
 			switch methodslen {
 			case 0:
 				controllerValue := reflect.ValueOf(controller)
-				methods.Lock()
+				//methods.Lock()
 				methods.maps[method][pkgName] = make(map[string]reflect.Value)
-				methods.Unlock()
+				//methods.Unlock()
 				for i := 0; i < reflect.ValueOf(controller).NumMethod(); i++ {
 					subLocation := controllerType.Method(i).Name
 					if strings.HasPrefix(subLocation, method) {
-						methods.Lock()
+						//methods.Lock()
 						methods.maps[method][pkgName][strings.ToLower(strings.Replace(subLocation, method, "", 1))] = controllerValue.Method(i)
-						methods.Unlock()
+						//methods.Unlock()
 					}
 				}
-				methods.RLock()
+				//methods.RLock()
 				v, hasRealAction := methods.maps[method][pkgName][realAction]
-				methods.RUnlock()
+				//methods.RUnlock()
 				value = v
 				if !hasRealAction && (len(methods.maps[method]) > 0 || len(methods.maps[method][pkgName]) > 0) {
 					http.NotFound(c.Writer, c.Request)
