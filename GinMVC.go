@@ -1,4 +1,4 @@
-package Gin_mvc
+package ginRouteAutoRegister
 
 import (
 	"github.com/gin-gonic/gin"
@@ -30,9 +30,9 @@ func GinAutoRoute(engine *gin.Engine, relativePath string, controller interface{
 	//engine.DELETE(relativePath, GinAutoHand(controller))
 	//engine.PUT(relativePath, GinAutoHand(controller))
 	//engine.OPTIONS(relativePath, GinAutoHand(controller))
-	engine.Any(relativePath, GinAutoHand(controller))
+	engine.Any(relativePath, ginAutoHand(controller))
 }
-func GinAutoHand(controller interface{}) gin.HandlerFunc {
+func ginAutoHand(controller interface{}) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		method := strings.Title(strings.ToLower(c.Request.Method))
 		realAction := strings.ToLower(c.Param("action"))
