@@ -1,8 +1,9 @@
 package route
 
 import (
-	"ginRouteAutoRegister/controller"
+	"ginRouteAutoRegister/demo/controller"
 	"github.com/gin-gonic/gin"
+	"gitlab.corp.youdao.com/DevOPS/go-common/Gin"
 	"net/http"
 )
 
@@ -34,8 +35,9 @@ func Route(engine *gin.Engine) {
 	//原生路由注册方式
 	engine.GET("/hello", controller.GetTest)
 	//自动注册方式
-	AutoRoute(engine, "/api", controller.NewHelloController())
-	AutoRoute(engine, "/v1/api2", controller.NewHelloController())
+	Gin.GinAutoRoute(engine, "/api", controller.NewHelloController())
+	//AutoRoute(engine, "/api", controller.NewHelloController())
+	//AutoRoute(engine, "/v1/api2", controller.NewHelloController())
 	//兼容原先gin拦截方式，自己写好LoginRequired，在LoginRequired之后的AutoRoute都会被拦截
 	//engine.Use(LoginRequired)
 	//AutoRoute(engine, "/filter", controller.NewHelloController())
