@@ -1,7 +1,7 @@
 package main
 
 import (
-	"ginRouteAutoRegister/demo/route"
+	"github.com/260721735/ginRouteAutoRegister/demo/route"
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
