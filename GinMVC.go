@@ -8,10 +8,10 @@ import (
 	"sync"
 )
 
-var methodsSync = struct {
-	sync.RWMutex
-	maps map[string]map[string]reflect.Value
-}{maps: make(map[string]map[string]reflect.Value)}
+//var methodsSync = struct {
+//	sync.RWMutex
+//	maps map[string]map[string]reflect.Value
+//}{maps: make(map[string]map[string]reflect.Value)}
 var methods = struct {
 	sync.RWMutex
 	maps map[string]map[string]map[string]reflect.Value
@@ -25,11 +25,6 @@ func GinAutoRoute(engine *gin.Engine, relativePath string, controller interface{
 		return
 	}
 	relativePath = relativePath + "/:action"
-	//engine.GET(relativePath, GinAutoHand(controller))
-	//engine.POST(relativePath, GinAutoHand(controller))
-	//engine.DELETE(relativePath, GinAutoHand(controller))
-	//engine.PUT(relativePath, GinAutoHand(controller))
-	//engine.OPTIONS(relativePath, GinAutoHand(controller))
 	engine.Any(relativePath, ginAutoHand(controller))
 }
 func ginAutoHand(controller interface{}) gin.HandlerFunc {
@@ -57,11 +52,14 @@ func ginAutoHand(controller interface{}) gin.HandlerFunc {
 				//methods.Lock()
 				methods.maps[method][pkgName] = make(map[string]reflect.Value)
 				//methods.Unlock()
-				for i := 0; i < reflect.ValueOf(controller).NumMethod(); i++ {
+				for i := 0; i < controllerValue.NumMethod(); i++ {
 					subLocation := controllerType.Method(i).Name
 					if strings.HasPrefix(subLocation, method) {
 						//methods.Lock()
-						methods.maps[method][pkgName][strings.ToLower(strings.Replace(subLocation, method, "", 1))] = controllerValue.Method(i)
+						if controllerValue.Method(i).Type().NumIn() == 1 && controllerValue.Method(i).Type().In(0) == reflect.TypeOf(c) {
+							methods.maps[method][pkgName][strings.ToLower(strings.Replace(subLocation, method, "", 1))] = controllerValue.Method(i)
+						}
+						//methods.maps[method][pkgName][strings.ToLower(strings.Replace(subLocation, method, "", 1))] = controllerValue.Method(i)
 						//methods.Unlock()
 					}
 				}

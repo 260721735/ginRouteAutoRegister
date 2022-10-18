@@ -18,6 +18,16 @@ func (controller *HelloController) GetTest(c *gin.Context) {
 		"data": nil,
 	})
 }
+func (controller *HelloController) GetTestBAD1(c *gin.Context, a string) {
+	c.JSON(http.StatusOK, gin.H{
+		"code": 0,
+		"msg":  "GetTestbad1",
+		"data": nil,
+	})
+}
+func (controller *HelloController) GetTestBAD2() {
+
+}
 func (controller *HelloController) PostTest(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"code": 0,

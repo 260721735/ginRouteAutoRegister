@@ -2,10 +2,7 @@ module github.com/260721735/ginRouteAutoRegister
 
 go 1.18
 
-require (
-	github.com/gin-gonic/gin v1.7.7
-	gitlab.corp.youdao.com/DevOPS/go-common v0.0.0-20220329053322-2f0034332c60
-)
+require github.com/gin-gonic/gin v1.7.7
 
 require (
 	github.com/gin-contrib/sse v0.1.0 // indirect
